@@ -11,6 +11,7 @@ import study.datajpa.entity.Team;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,8 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Rollback(value = false)
 public class MemberRepositoryTest {
 
-    @Autowired MemberRepository memberRepository;
-    @Autowired TeamRepository teamRepository;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     public void testMember() {
@@ -140,5 +143,47 @@ public class MemberRepositoryTest {
         for (Member member : result) {
             System.out.println("member = " + member);
         }
+    }
+
+    @Test
+    public void returnType() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        System.out.println("===============================================");
+//        List<Member> aaa = memberRepository.findListByUsername("AAA");
+        // 데이터가 없을 경우 empty collection이 반환되어 아래와같이 사용하면 된다.
+        List<Member> result = memberRepository.findListByUsername("sdfsdf");
+        System.out.println("result = " + result.size()); // 0
+
+//        Member findMember = memberRepository.findMemberByUsername("AAA");
+        // 데이터가 없을 경우 Null이 반환 되어 exception이 터질수 있다.
+        // 이런 경우 마지막 경우와 같이 Optional을 사용하면 된다. 즉, Optional을 사용하자
+        Member findMember = memberRepository.findMemberByUsername("asdfsdf");
+        System.out.println("findMember = " + findMember); // null
+
+        Optional<Member> optional = memberRepository.findOptionalByUsername("AAA");
+        System.out.println("optional.get() = " + optional.get());
+
+
+        /* 아래 코드는 단독으로 테스트
+        아래와 같이 AAA가 두 개있을 경우 Optional도 exception 이 터지는데
+        NonUniqueResultException이 터지면 springframwoek Exception으로 바꿔서 반환을 해준다.(exception을 spring 예외로 변환)
+        왜냐하면 memberRepository의 기술은 jpa가 될 수도 있고, MongoDB가 될 수도 있고, 다른 기술이 될 수 있다.
+        그것을 사용하는 서비스 계층의 어떤 클라이언트 코드는 jpe나 이런 데 의존하는 것이 아니라 스프링이 추상화한 것에 의존하면
+        리포지토리 기술을 jpe에서 MongoDB나 다른 JDBC등 다른 것으로 바꿔도
+        스프링은 데이터가 안 맞는 거는 동일하게 IncorrectResultSizeDataAccessException을 내려준다.
+        그래서 이것을 사용하는 클라이언트 코드를 바꿀 필요가 없게 된다.
+        */
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("AAA", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        Optional<Member> optional = memberRepository.findOptionalByUsername("AAA");
+        System.out.println("optional.get() = " + optional.get());
+
     }
 }
