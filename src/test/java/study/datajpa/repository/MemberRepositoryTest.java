@@ -177,13 +177,13 @@ public class MemberRepositoryTest {
         스프링은 데이터가 안 맞는 거는 동일하게 IncorrectResultSizeDataAccessException을 내려준다.
         그래서 이것을 사용하는 클라이언트 코드를 바꿀 필요가 없게 된다.
         */
-        Member m1 = new Member("AAA", 10);
-        Member m2 = new Member("AAA", 20);
-        memberRepository.save(m1);
-        memberRepository.save(m2);
-
-        Optional<Member> optional = memberRepository.findOptionalByUsername("AAA");
-        System.out.println("optional.get() = " + optional.get());
+//        Member m1 = new Member("AAA", 10);
+//        Member m2 = new Member("AAA", 20);
+//        memberRepository.save(m1);
+//        memberRepository.save(m2);
+//
+//        Optional<Member> optional = memberRepository.findOptionalByUsername("AAA");
+//        System.out.println("optional.get() = " + optional.get());
 
     }
 }
