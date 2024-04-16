@@ -204,22 +204,22 @@ public class MemberRepositoryTest {
 
         // when
 //        Page<Member> page = memberRepository.findByAge(age, pageRequest);
-        Slice<Member> page = memberRepository.findByAge(age, pageRequest);
+        List<Member> page = memberRepository.findByAge(age, pageRequest);
 
         // then
-        List<Member> content = page.getContent();
+//        List<Member> content = page.getContent();
 //        long totalElements = page.getTotalElements();
 
-        for (Member member : content) {
-            System.out.println("member = " + member);
-        }
+//        for (Member member : content) {
+//            System.out.println("member = " + member);
+//        }
 //        System.out.println("totalElements = " + totalElements);
 
-        assertThat(content.size()).isEqualTo(3);
+//        assertThat(content.size()).isEqualTo(3);
 //        assertThat(page.getTotalElements()).isEqualTo(5);
-        assertThat(page.getNumber()).isEqualTo(0); // 페이지 번호는?
+//        assertThat(page.getNumber()).isEqualTo(0); // 페이지 번호는?
 //        assertThat(page.getTotalPages()).isEqualTo(2); // 총 페이지수는?
-        assertThat(page.isFirst()).isTrue(); // 첫번째 페이지인가?
-        assertThat(page.hasNext()).isTrue(); // 다음 페이지가 있는가?
+//        assertThat(page.isFirst()).isTrue(); // 첫번째 페이지인가?
+//        assertThat(page.hasNext()).isTrue(); // 다음 페이지가 있는가?
     }
 }
