@@ -232,6 +232,8 @@ public class MemberRepositoryTest {
     public void bulkUpdate() {
         // 현재 영속성 컨텍스트에 있는 것이지 DB에 있는것이 아니다.
         // 벌크 연산의 경우 영속성 컨텍스트를 무시하고 그냥 DB에 넣어버여 문제가 발생할 수 있다. 서로 안맞을 수 있다.
+        // 그래서 벌크 연산 이후에 영속성 컨텍스트를 비워야 한다.
+        // em.flush(), em.clear() 또는 @Modifying(clearAutomatically = true)를 사용
         memberRepository.save(new Member("member1", 10));
         memberRepository.save(new Member("member2", 19));
         memberRepository.save(new Member("member3", 20));
@@ -240,10 +242,12 @@ public class MemberRepositoryTest {
 
         // when
         int resultCount = memberRepository.bulkAgePlus(20);
+//        em.flush();
+//        em.clear();
 
         List<Member> result = memberRepository.findByUsername("member5");
         Member member5 = result.get(0);
-        System.out.println("member5 = " + member5); // member5 = Member(id=5, username=member5, age=40)
+        System.out.println("member5 = " + member5); // member5 = Member(id=5, username=member5, age=41)
 
         // then
         assertThat(resultCount).isEqualTo(3);

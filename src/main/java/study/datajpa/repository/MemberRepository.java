@@ -39,7 +39,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "select m from Member m left join m.team t")
     Page<Member> findByAge(int age, Pageable pageable);
 
-    @Modifying
+    @Modifying(clearAutomatically = true) // 쿼리가 나가고 clear 과정을 자동으로 해준다.
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
 }
