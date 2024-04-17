@@ -1,5 +1,7 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +29,9 @@ public class MemberRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     public void testMember() {
@@ -221,5 +226,26 @@ public class MemberRepositoryTest {
         assertThat(page.getTotalPages()).isEqualTo(2); // 총 페이지수는?
         assertThat(page.isFirst()).isTrue(); // 첫번째 페이지인가?
         assertThat(page.hasNext()).isTrue(); // 다음 페이지가 있는가?
+    }
+
+    @Test
+    public void bulkUpdate() {
+        // 현재 영속성 컨텍스트에 있는 것이지 DB에 있는것이 아니다.
+        // 벌크 연산의 경우 영속성 컨텍스트를 무시하고 그냥 DB에 넣어버여 문제가 발생할 수 있다. 서로 안맞을 수 있다.
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        // when
+        int resultCount = memberRepository.bulkAgePlus(20);
+
+        List<Member> result = memberRepository.findByUsername("member5");
+        Member member5 = result.get(0);
+        System.out.println("member5 = " + member5); // member5 = Member(id=5, username=member5, age=40)
+
+        // then
+        assertThat(resultCount).isEqualTo(3);
     }
 }
