@@ -274,11 +274,11 @@ public class MemberRepositoryTest {
 
         // when N + 1
         // select Member 1
-        List<Member> members = memberRepository.findAll();
+        List<Member> members = memberRepository.findMemberFetchJoin();
 
         for (Member member : members) {
             System.out.println("member = " + member.getUsername()); // member1, member2
-            System.out.println("member.teamClass = " + member.getTeam().getClass()); // Proxy
+            System.out.println("member.teamClass = " + member.getTeam().getClass()); // class study.datajpa.entity.Team
             System.out.println("member.team = " + member.getTeam().getName()); // team.A, teamB
         }
     }
