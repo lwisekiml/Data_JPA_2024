@@ -274,7 +274,7 @@ public class MemberRepositoryTest {
 
         // when N + 1
         // select Member 1
-        List<Member> members = memberRepository.findMemberFetchJoin();
+        List<Member> members = memberRepository.findAll();
 
         for (Member member : members) {
             System.out.println("member = " + member.getUsername()); // member1, member2
