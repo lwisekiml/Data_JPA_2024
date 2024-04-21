@@ -11,10 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberQueryRepository {
 
-    private final EntityManager em;
-
-    List<Member> findAllMembers() { // 쿼리가 복잡하다고 가정
-        em.createQuery("select m from Member m")
-                .getResultList();
-    }
+//    private final EntityManager em;
+//
+//    List<Member> findAllMembers() { // 쿼리가 복잡하다고 가정
+//        em.createQuery("select m from Member m")
+//                .getResultList();
+//    }
 }
