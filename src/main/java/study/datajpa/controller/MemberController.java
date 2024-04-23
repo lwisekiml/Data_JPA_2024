@@ -8,6 +8,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.repository.MemberRepository;
 
@@ -31,9 +32,12 @@ public class MemberController {
     // http://localhost:8080/members?page=0&size=3&sort=id,desc
     // 기본 설정은 20개씩 나오도록 되어 있다.
     @GetMapping("/members")
-    public Page<Member> list(@PageableDefault(size = 5) Pageable pageable) { // 특별한 곳에 설정 변경
-        Page<Member> page = memberRepository.findAll(pageable);
-        return page;
+    public Page<MemberDto> list(@PageableDefault(size = 5) Pageable pageable) { // 특별한 곳에 설정 변경
+//        Page<Member> page = memberRepository.findAll(pageable);
+//        Page<MemberDto> map = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+//        return map;
+        return memberRepository.findAll(pageable)
+                .map(MemberDto::new); // .map(member -> new MemberDto(member));
     }
 
     @PostConstruct
