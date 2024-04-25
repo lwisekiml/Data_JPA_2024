@@ -355,8 +355,10 @@ public class MemberRepositoryTest {
         em.clear();
 
         // when
-        // Probe
+        // Probe : 필드에 데이터가 있는 실제 도메인 객체
         Member member = new Member("m1");
+        Team team = new Team("teamA");
+        member.setTeam(team); // m1이면서 teamA를 찾을꺼야
 
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("age");
 
